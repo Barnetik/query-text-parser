@@ -42,16 +42,16 @@ class Parser
     {
         $this->tokens = [
             ["/(OR|AND|ADJ|NEAR)/", self::TYPE_OPERATOR],
-            ["/-\"(.+?)\"/", self::TYPE_NEGATED_QUOTED_STRING, function(array $m) {
+            ["/-\"(.+?)\"/u", self::TYPE_NEGATED_QUOTED_STRING, function(array $m) {
                 return $m[1];
             }],
-            ["/-(\w+)/", self::TYPE_NEGATED_STRING, function(array $m) {
+            ["/-([]\w\*]+)/u", self::TYPE_NEGATED_STRING, function(array $m) {
                 return $m[1];
             }],
-            ["/\"(.+?)\"/", self::TYPE_QUOTED_STRING, function(array $m) {
+            ["/\"(.+?)\"/u", self::TYPE_QUOTED_STRING, function(array $m) {
                 return $m[1];
             }],
-            ["/\w+/", self::TYPE_STRING],
+            ["/[\w\*]+/u", self::TYPE_STRING],
             ["/,/", self::TYPE_PARAM_SEPARATOR], //Not used
             ["/\(/", self::TYPE_OPEN_BRACKET],
             ["/\)/", self::TYPE_CLOSE_BRACKET],
@@ -124,7 +124,7 @@ class Parser
             if ($this->isString($token)) {
                 $partial = new Data\Partial();
                 $partial->text = $token->value;
-                $partial->negate = $this->isNegatedString($token);
+                $partial->negate = (bool)$this->isNegatedString($token);
                 array_push($tree, $partial);
             } else if ($this->isOperator($token)) {
                 $group = new Data\Group();
