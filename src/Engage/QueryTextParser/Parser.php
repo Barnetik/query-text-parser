@@ -40,7 +40,7 @@ class Parser
 
     public function __construct()
     {
-        $typeString = "\w@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>";
+        $typeString = "\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>";
         $this->tokens = [
             ["/(OR|AND|ADJ|NEAR)/", self::TYPE_OPERATOR],
             ["/-\"(.+?)\"/u", self::TYPE_NEGATED_QUOTED_STRING, function(array $m) {
