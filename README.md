@@ -10,8 +10,11 @@ The library is fully unit-tested.
 
 ## Features
 
-* AND/OR operators
-* Grouped queries using paranthesis -- i.e. `(Denver AND Boston) OR Miami`
+* AND/OR/NEAR/ADJ operators
+* Grouped queries using paranthesis -- i.e. `Denver AND (Boston OR Miami)`
+* Operator precedence support: 
+ * ADJ|NEAR > AND > OR
+ * 'Denver OR Boston AND Miami OR Chicago' equals 'Denver OR (Boston AND Miami) OR Chicago'
 * Multi-word search queries using quotes -- i.e. `"San Francisco" AND Chicago`
 * Negated matches -- i.e. 'Denver AND -Boston AND -"San Francisco"'
 
@@ -64,4 +67,4 @@ Engage\QueryTextParser\Data\Group Object
 
 ## TODO
 
-* Support negating operator (i.e. *NOT*)
+* Support NOT operator
