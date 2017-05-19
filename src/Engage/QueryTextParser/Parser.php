@@ -40,18 +40,19 @@ class Parser
 
     public function __construct()
     {
+        $typeString = "\w@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>";
         $this->tokens = [
             ["/(OR|AND|ADJ|NEAR)/", self::TYPE_OPERATOR],
             ["/-\"(.+?)\"/u", self::TYPE_NEGATED_QUOTED_STRING, function(array $m) {
                 return $m[1];
             }],
-            ["/-([]\w\*]+)/u", self::TYPE_NEGATED_STRING, function(array $m) {
+            ["/-([" . $typeString . "]+)/u", self::TYPE_NEGATED_STRING, function(array $m) {
                 return $m[1];
             }],
             ["/\"(.+?)\"/u", self::TYPE_QUOTED_STRING, function(array $m) {
                 return $m[1];
             }],
-            ["/[\w\*]+/u", self::TYPE_STRING],
+            ["/[" . $typeString . "]+/u", self::TYPE_STRING],
             ["/,/", self::TYPE_PARAM_SEPARATOR], //Not used
             ["/\(/", self::TYPE_OPEN_BRACKET],
             ["/\)/", self::TYPE_CLOSE_BRACKET],
