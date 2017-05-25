@@ -121,6 +121,9 @@ class Parser
     private function buildTree($parsedQuery)
     {
         $tree = [];
+        if (!is_array($parsedQuery)) {
+            throw new \Exception('No items on query');
+        }
         foreach ($parsedQuery as $token) {
             if ($this->isString($token)) {
                 $partial = new Data\Partial();
