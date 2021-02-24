@@ -21,7 +21,7 @@ The library is fully unit-tested.
 ## Example usage
 
 ```php
-$parser = new Engage\QueryTextParser\Parser;
+$parser = new \Engage\QueryTextParser\Parser;
 $result = $parser->parse('(Chicago AND -Houston) OR Phoenix');
 print_r($result);
 ```
@@ -65,6 +65,15 @@ Engage\QueryTextParser\Data\Group Object
 )
 ```
 
+### Allowing special characters on words
+Allowed characters are configurable when on Parser instantiation. Default: "\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>"
+
+```php
+// Allow colons inside of words
+$parser = new \Engage\QueryTextParser\Parser("\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>:");
+$result = $parser->parse('(id:7ab36acd245 AND -Houston) OR Phoenix');
+print_r($result);
+```
 ## TODO
 
 * Support NOT operator
