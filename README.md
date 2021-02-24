@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Barnetik/query-text-parser.png?branch=master)](https://travis-ci.org/EngageDC/query-text-parser)
+[![Build Status](https://travis-ci.org/Barnetik/query-text-parser.png?branch=master)](https://travis-ci.org/Barnetik/query-text-parser)
 
 # Query Text Parser
 
@@ -66,7 +66,7 @@ Engage\QueryTextParser\Data\Group Object
 ```
 
 ### Allowing special characters on words
-Allowed characters are configurable when on Parser instantiation. Default: "\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>"
+Allowed characters are configurable when on Parser instantiation. Default: ```"\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>"```
 
 ```php
 // Allow colons inside of words
