@@ -23,7 +23,7 @@
         "barnetik/shuntingyard": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0@dev"
+        "phpunit/phpunit": "^7"
     },
     "autoload": {
         "psr-0": {
