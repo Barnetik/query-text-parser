@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/EngageDC/query-text-parser.png?branch=master)](https://travis-ci.org/EngageDC/query-text-parser)
+[![Build Status](https://travis-ci.org/Barnetik/query-text-parser.png?branch=master)](https://travis-ci.org/EngageDC/query-text-parser)
 
 # Query Text Parser
 
