@@ -5,12 +5,13 @@ use Engage\QueryTextParser\Exceptions\ParserException;
 use Engage\QueryTextParser\Data\Group;
 use Engage\QueryTextParser\Data\GroupComparison;
 use Engage\QueryTextParser\Data\Partial;
+use PHPUnit\Framework\TestCase;
 
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
 	private $parser;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->parser = new Parser();
 	}
 
