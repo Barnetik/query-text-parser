@@ -2,9 +2,7 @@
 
 use Engage\QueryTextParser\Parser;
 use Engage\QueryTextParser\Exceptions\ParserException;
-use Engage\QueryTextParser\Data\Group;
 use Engage\QueryTextParser\Data\GroupComparison;
-use Engage\QueryTextParser\Data\Partial;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
@@ -53,6 +51,60 @@ class ParserTest extends TestCase
 			echo 'Parse Error: ' . $e->getMessage();
 		}
     }
+
+	public function testUnexpectedWordCharactersThrowException()
+	{
+		$this->expectException(ParserException::class);
+
+		// Colon is not an expected word character
+		$this->parser->parse('id:Chicago AND Houston');
+	}
+
+	public function testConfigurableWordCharactersWork()
+	{
+		$parser = new Parser("\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>:");
+		// Colon is not an expected word character
+		$result = $parser->parse('id:Chicago AND Houston');
+
+		// Verify consistency of group
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Group', $result);
+		$this->assertEquals($result->type, GroupComparison::OPERATOR_AND);
+
+		$this->assertCount(2, $result->children);
+
+		// Verify consistency of children
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Partial', $result->children[0]);
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Partial', $result->children[1]);
+
+		$this->assertEquals($result->children[0]->text, 'id:Chicago');
+		$this->assertEquals($result->children[0]->negate, false);
+
+		$this->assertEquals($result->children[1]->text, 'Houston');
+		$this->assertEquals($result->children[1]->negate, false);
+	}
+
+	public function testHyphensAreAllowedInsideWords()
+	{
+		$parser = new Parser();
+		// Colon is not an expected word character
+		$result = $parser->parse('Markina-Xemein AND Houston');
+
+		// Verify consistency of group
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Group', $result);
+		$this->assertEquals($result->type, GroupComparison::OPERATOR_AND);
+
+		$this->assertCount(2, $result->children);
+
+		// Verify consistency of children
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Partial', $result->children[0]);
+		$this->assertInstanceOf('Engage\QueryTextParser\Data\Partial', $result->children[1]);
+
+		$this->assertEquals($result->children[0]->text, 'Markina-Xemein');
+		$this->assertEquals($result->children[0]->negate, false);
+
+		$this->assertEquals($result->children[1]->text, 'Houston');
+		$this->assertEquals($result->children[1]->negate, false);
+	}
 
 	public function testNegatedPartials() {
 		try {

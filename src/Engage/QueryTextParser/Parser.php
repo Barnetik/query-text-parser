@@ -1,10 +1,10 @@
 <?php namespace Engage\QueryTextParser;
 
 use Engage\QueryTextParser\Data\Group;
-use Engage\QueryTextParser\Data\GroupComparison;
 use Engage\QueryTextParser\Data\Partial;
 
 use dbeurive\Shuntingyard\ShuntingYard;
+use Engage\QueryTextParser\Exceptions\ParserException;
 
 class Parser
 {
@@ -38,9 +38,8 @@ class Parser
 
     public $error = '';
 
-    public function __construct()
+    public function __construct($typeString = "\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>\-")
     {
-        $typeString = "\w\*@#\.,\|#~%$&\/\\{\}\*\?\¿_\+\[\]<>";
         $this->tokens = [
             ["/(OR|AND|ADJ|NEAR)/", self::TYPE_OPERATOR],
             ["/-\"(.+?)\"/u", self::TYPE_NEGATED_QUOTED_STRING, function(array $m) {
@@ -75,11 +74,14 @@ class Parser
     }
 
     public function parse($query) {
-       $lexer = new \dbeurive\Lexer\Lexer($this->tokens);
-       $queryTokens = $this->fixTokens($lexer->lex($query));
-       $error = '';
-       $parsedQuery = $this->parser->convertFromTokens($queryTokens, $query, $this->error);
-       return $this->buildTree($parsedQuery);
+        try {
+            $lexer = new \dbeurive\Lexer\Lexer($this->tokens);
+            $queryTokens = $this->fixTokens($lexer->lex($query));
+        } catch (\Exception $e) {
+            throw new ParserException($e->getMessage(), $e->getCode(), $e);
+        }
+        $parsedQuery = $this->parser->convertFromTokens($queryTokens, $query, $this->error);
+        return $this->buildTree($parsedQuery);
     }
 
     /**
@@ -126,12 +128,12 @@ class Parser
         }
         foreach ($parsedQuery as $token) {
             if ($this->isString($token)) {
-                $partial = new Data\Partial();
+                $partial = new Partial();
                 $partial->text = $token->value;
                 $partial->negate = (bool)$this->isNegatedString($token);
                 array_push($tree, $partial);
             } else if ($this->isOperator($token)) {
-                $group = new Data\Group();
+                $group = new Group();
                 $group->type = $token->value;
                 $secondChild = array_pop($tree);
                 $firstChild = array_pop($tree);
@@ -140,8 +142,8 @@ class Parser
             }
         }
         $finalTree = array_pop($tree);
-        if ($finalTree instanceof Data\Partial)  {
-            $group = new Data\Group();
+        if ($finalTree instanceof Partial)  {
+            $group = new Group();
             $group->children[] = $finalTree;
             return $group;
         }

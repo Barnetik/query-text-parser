@@ -1,7 +1,7 @@
 {
     "name": "barnetik/query-text-parser",
     "description": "This Query Text Parser library converts a search query into an abstract syntax tree (AST).",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "authors": [
         {
             "name": "Mathias Hansen",
