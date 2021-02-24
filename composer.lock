@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c3e40d89e7d9ac996cec98d936abefe",
+    "content-hash": "4f496cbaf4fa5ac421e1425cb9af853b",
     "packages": [
         {
             "name": "barnetik/shuntingyard",
@@ -1584,7 +1584,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.0"
+        "php": ">=7.2.0"
     },
     "platform-dev": []
 }
